@@ -68,10 +68,13 @@ defmodule Exzeitable.HTML.Table do
   defp hide_link_for({key, _value}, assigns) do
     assigns
     |> text(:hide)
-    |> cont(:a,
-      class: "exz-hide-link",
-      "phx-click": "hide_column",
-      "phx-value-column": key
+    |> cont(
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-hide-link",
+        "phx-click": "hide_column",
+        "phx-value-column": key
+      )
     )
   end
 
@@ -89,10 +92,14 @@ defmodule Exzeitable.HTML.Table do
         _ -> "#{sort}  "
       end
 
-    content_tag(:a, label,
-      class: "exz-sort-link",
-      "phx-click": "sort_column",
-      "phx-value-column": key
+    content_tag(
+      :a,
+      label,
+      maybe_append_target(assigns,
+        class: "exz-sort-link",
+        "phx-click": "sort_column",
+        "phx-value-column": key
+      )
     )
   end
 

@@ -15,6 +15,15 @@ defmodule Exzeitable.HTML.Helpers do
       # Used to build lists
       @spec prepend(list, any) :: list
       defp prepend(list, element), do: [element | list]
+
+      # Used to append component ID to click events
+      defp maybe_append_target(assigns, attrs) when is_map(assigns) and is_list(attrs) do
+        if target = Map.get(assigns, :myself) do
+          Keyword.put(attrs, :"phx-target", target)
+        else
+          attrs
+        end
+      end
     end
   end
 end
