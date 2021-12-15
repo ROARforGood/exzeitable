@@ -5,6 +5,8 @@ defmodule Exzeitable.HTML.Search do
 
   @spec build(map) :: {:safe, iolist}
   def build(%{debounce: debounce} = assigns) do
+    search = Map.get(assigns, :search, "")
+
     if search_enabled?(assigns) do
       form_for(
         :search,
@@ -20,7 +22,8 @@ defmodule Exzeitable.HTML.Search do
             text_input(f, :search,
               placeholder: text(assigns, :search),
               class: "exz-search-field",
-              phx_debounce: debounce
+              phx_debounce: debounce,
+              value: search
             ),
             counter(assigns)
           ]
