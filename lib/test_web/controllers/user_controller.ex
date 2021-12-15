@@ -8,6 +8,11 @@ defmodule TestWeb.UserController do
     render(conn, "index.html", users: users)
   end
 
+  def component(conn, _params) do
+    posts = Query.list_posts()
+    render(conn, "component.html", posts: posts)
+  end
+
   def new(conn, _params) do
     changeset = Query.change_user(%User{})
     render(conn, "new.html", changeset: changeset)
