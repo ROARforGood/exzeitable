@@ -1,6 +1,5 @@
 defmodule Exzeitable.EventHandler do
   alias Phoenix.LiveView
-  alias Exzeitable.Database
 
   @type socket :: Phoenix.LiveView.Socket.t()
 
@@ -38,7 +37,7 @@ defmodule Exzeitable.EventHandler do
     socket =
       socket
       |> LiveView.assign(new_value)
-      |> LiveView.assign(:list, Database.get_records(Map.merge(assigns, new_value)))
+      |> LiveView.assign(:list, get_records(Map.merge(assigns, new_value)))
 
     {:noreply, socket}
   end
@@ -56,7 +55,7 @@ defmodule Exzeitable.EventHandler do
     socket =
       socket
       |> LiveView.assign(new_value)
-      |> LiveView.assign(:list, Database.get_records(Map.merge(assigns, new_value)))
+      |> LiveView.assign(:list, get_records(Map.merge(assigns, new_value)))
 
     {:noreply, socket}
   end
@@ -81,8 +80,8 @@ defmodule Exzeitable.EventHandler do
 
     if LiveView.connected?(socket) do
       socket
-      |> LiveView.assign(:list, Database.get_records(assigns))
-      |> LiveView.assign(:count, Database.get_record_count(assigns))
+      |> LiveView.assign(:list, get_records(assigns))
+      |> LiveView.assign(:count, get_record_count(assigns))
     else
       socket
       |> LiveView.assign(:list, [])
@@ -102,5 +101,17 @@ defmodule Exzeitable.EventHandler do
 
   def maybe_set_refresh(socket) do
     socket
+  end
+
+  defp get_records(assigns) do
+    record_source(assigns).get_records(assigns)
+  end
+
+  defp get_record_count(assigns) do
+    record_source(assigns).get_record_count(assigns)
+  end
+
+  defp record_source(assigns) do
+    Map.fetch!(assigns, :record_source)
   end
 end
