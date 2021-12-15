@@ -60,11 +60,14 @@ defmodule Exzeitable.HTML.Pagination do
   defp paginate_button(assigns, :next, page, _pages) do
     assigns
     |> text(:next)
-    |> cont(:a,
-      class: "exz-pagination-a",
-      style: "cursor: pointer",
-      "phx-click": "change_page",
-      "phx-value-page": page + 1
+    |> cont(
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-pagination-a",
+        style: "cursor: pointer",
+        "phx-click": "change_page",
+        "phx-value-page": page + 1
+      )
     )
     |> cont(:li, class: "exz-pagination-li")
   end
@@ -72,11 +75,14 @@ defmodule Exzeitable.HTML.Pagination do
   defp paginate_button(assigns, :previous, page, _pages) do
     assigns
     |> text(:previous)
-    |> cont(:a,
-      class: "exz-pagination-a",
-      style: "cursor: pointer",
-      "phx-click": "change_page",
-      "phx-value-page": page - 1
+    |> cont(
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-pagination-a",
+        style: "cursor: pointer",
+        "phx-click": "change_page",
+        "phx-value-page": page - 1
+      )
     )
     |> cont(:li, class: "exz-pagination-li")
   end
@@ -86,12 +92,16 @@ defmodule Exzeitable.HTML.Pagination do
     |> cont(:li, class: "exz-pagination-li-active")
   end
 
-  defp paginate_button(_assigns, page, _page, _pages) when is_integer(page) do
-    cont(page, :a,
-      class: "exz-pagination-a exz-pagination-width",
-      style: "cursor: pointer",
-      "phx-click": "change_page",
-      "phx-value-page": page
+  defp paginate_button(assigns, page, _page, _pages) when is_integer(page) do
+    cont(
+      page,
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-pagination-a exz-pagination-width",
+        style: "cursor: pointer",
+        "phx-click": "change_page",
+        "phx-value-page": page
+      )
     )
     |> cont(:li, class: "exz-pagination-li")
   end

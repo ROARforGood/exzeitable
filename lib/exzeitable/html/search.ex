@@ -10,11 +10,11 @@ defmodule Exzeitable.HTML.Search do
         :search,
         "#",
         # onkeypress to disable enter key in search field
-        [
+        maybe_append_target(assigns,
           phx_change: :search,
           class: "exz-search-form",
           onkeypress: "return event.keyCode != 13;"
-        ],
+        ),
         fn f ->
           [
             text_input(f, :search,

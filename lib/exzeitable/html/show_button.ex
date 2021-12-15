@@ -20,10 +20,13 @@ defmodule Exzeitable.HTML.ShowButton do
 
     assigns
     |> text(:show_field, name)
-    |> cont(:a,
-      class: "exz-show-button",
-      "phx-click": "show_column",
-      "phx-value-column": key
+    |> cont(
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-show-button",
+        "phx-click": "show_column",
+        "phx-value-column": key
+      )
     )
   end
 
@@ -33,18 +36,24 @@ defmodule Exzeitable.HTML.ShowButton do
   def build_show_hide_fields_button(%{show_field_buttons: true} = assigns) do
     assigns
     |> text(:hide_field_buttons)
-    |> cont(:a,
-      class: "exz-info-button",
-      "phx-click": "hide_buttons"
+    |> cont(
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-info-button",
+        "phx-click": "hide_buttons"
+      )
     )
   end
 
   def build_show_hide_fields_button(assigns) do
     assigns
     |> text(:show_field_buttons)
-    |> cont(:a,
-      class: "exz-info-button",
-      "phx-click": "show_buttons"
+    |> cont(
+      :a,
+      maybe_append_target(assigns,
+        class: "exz-info-button",
+        "phx-click": "show_buttons"
+      )
     )
   end
 end
