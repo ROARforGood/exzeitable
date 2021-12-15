@@ -5,12 +5,17 @@ defmodule Exzeitable do
 
   @doc "Expands into the gigantic monstrosity that is Exzeitable"
   defmacro __using__(opts) do
-    alias Exzeitable.{Database, Parameters}
+    alias Exzeitable.Parameters
+
+    record_source =
+      opts
+      |> Keyword.get(:record_source, Exzeitable.Database)
+      |> Macro.expand(__CALLER__)
 
     search_string =
       opts
       |> Parameters.set_fields()
-      |> Database.tsvector_string()
+      |> record_source.tsvector_string()
 
     # coveralls-ignore-stop
 
@@ -19,7 +24,7 @@ defmodule Exzeitable do
       use Phoenix.HTML
       import Ecto.Query
       alias Phoenix.LiveView.Helpers
-      alias Exzeitable.{Database, Filter, Format, HTML, Parameters, Validation}
+      alias Exzeitable.{Filter, Format, HTML, Parameters, Validation}
       @callback render(map) :: {:ok, iolist}
       @type socket :: Phoenix.LiveView.Socket.t()
 
@@ -34,6 +39,10 @@ defmodule Exzeitable do
 
       """
       defdelegate build_table(assigns), to: HTML, as: :build
+
+      def prefix_search(search) do
+        unquote(record_source).prefix_search(search)
+      end
 
       @spec live_table(Plug.Conn.t(), keyword) :: {:safe, iolist}
       def live_table(conn, opts \\ []) do
@@ -96,7 +105,7 @@ defmodule Exzeitable do
         socket =
           socket
           |> assign(new_value)
-          |> assign(:list, Database.get_records(Map.merge(assigns, new_value)))
+          |> assign(:list, get_records(Map.merge(assigns, new_value)))
 
         {:noreply, socket}
       end
@@ -114,7 +123,7 @@ defmodule Exzeitable do
         socket =
           socket
           |> assign(new_value)
-          |> assign(:list, Database.get_records(Map.merge(assigns, new_value)))
+          |> assign(:list, get_records(Map.merge(assigns, new_value)))
 
         {:noreply, socket}
       end
@@ -139,8 +148,8 @@ defmodule Exzeitable do
 
         if connected?(socket) do
           socket
-          |> assign(:list, Database.get_records(assigns))
-          |> assign(:count, Database.get_record_count(assigns))
+          |> assign(:list, get_records(assigns))
+          |> assign(:count, get_record_count(assigns))
         else
           socket
           |> assign(:list, [])
@@ -165,13 +174,23 @@ defmodule Exzeitable do
       # Need to unquote the search string because string interpolation is not allowed.
       @spec do_search(Ecto.Query.t(), String.t()) :: Ecto.Query.t()
       def do_search(query, search) do
+        prefixed_search = unquote(record_source).prefix_search(search)
+
         where(
           query,
           fragment(
             unquote(search_string),
-            ^Database.prefix_search(search)
+            ^prefixed_search
           )
         )
+      end
+
+      defp get_records(assigns) do
+        unquote(record_source).get_records(assigns)
+      end
+
+      defp get_record_count(assigns) do
+        unquote(record_source).get_record_count(assigns)
       end
     end
   end
