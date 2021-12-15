@@ -27,5 +27,11 @@ defmodule TestWeb.PageControllerTest do
 
       assert html_response(conn, 200) =~ "Users"
     end
+
+    test "Renders posts in a component", %{conn: conn} do
+      conn = get(conn, Routes.user_path(conn, :component))
+
+      assert html_response(conn, 200) =~ "Users"
+    end
   end
 end

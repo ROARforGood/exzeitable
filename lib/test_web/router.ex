@@ -20,6 +20,7 @@ defmodule TestWeb.Router do
     get("/", PostController, :index)
     get("/beitrage", BeitrageController, :index)
     resources("/users", UserController)
+    get("/component", UserController, :component, as: :user)
     get("/posts/no_action_buttons", PostController, :no_action_buttons)
     get("/posts/disable_hide", PostController, :disable_hide)
     get("/posts/no_pagination", PostController, :no_pagination)
