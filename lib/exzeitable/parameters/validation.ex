@@ -23,4 +23,17 @@ defmodule Exzeitable.Parameters.Validation do
   def paired_options(session) do
     session
   end
+
+  @doc "If you have a record_source then query is optional, otherwise required."
+  @spec has_query_source(map) :: map | nil
+  def has_query_source(%{"record_source" => record_source, "query" => query} = session) do
+    case {record_source, query} do
+      {nil, nil} ->
+        raise ParameterError,
+          message: "[:query] needs to be defined if [:record_source] is not"
+
+      _ ->
+        session
+    end
+  end
 end

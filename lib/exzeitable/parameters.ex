@@ -7,7 +7,8 @@ defmodule Exzeitable.Parameters do
   alias Exzeitable.Parameters.{ParameterError, Validation}
 
   @parameters %{
-    query: %{required: true},
+    query: %{default: nil},
+    record_source: %{default: nil},
     repo: %{required: true},
     routes: %{required: true},
     path: %{required: true},
@@ -76,6 +77,7 @@ defmodule Exzeitable.Parameters do
       "csrf_token" => Phoenix.Controller.get_csrf_token()
     })
     |> Validation.paired_options()
+    |> Validation.has_query_source()
   end
 
   defp get_key_value_pair(parameter, function_opts, module_opts) do
