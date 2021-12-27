@@ -5,6 +5,7 @@ defmodule Exzeitable.Database do
   @callback get_records(map) :: [map]
   @callback get_record_count(map) :: integer
   @callback tsvector_string([keyword]) :: String.t()
+  @callback prefix_search(String.t()) :: String.t()
 
   @doc "Get the data using query"
   @spec get_records(map) :: [map]
