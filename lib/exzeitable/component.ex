@@ -62,7 +62,7 @@ defmodule Exzeitable.Component do
       # Need to unquote the search string because string interpolation is not allowed.
       @spec handle_search(Ecto.Query.t(), String.t()) :: Ecto.Query.t()
       def handle_search(query, search) do
-        prefixed_search = unquote(record_source).prefix_search(search)
+        prefixed_search = prefix_search(search)
 
         where(
           query,
