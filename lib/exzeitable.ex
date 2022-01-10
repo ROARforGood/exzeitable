@@ -46,11 +46,15 @@ defmodule Exzeitable do
 
       @spec live_table(Plug.Conn.t(), keyword) :: {:safe, iolist}
       def live_table(conn, opts \\ []) do
-        Helpers.live_render(conn, __MODULE__,
+        Helpers.live_render(conn, __MODULE__, setup(opts))
+      end
+
+      def setup(opts \\ []) do
+        [
           # Live component ID
           id: Keyword.get(unquote(opts), :id, 1),
           session: Parameters.process(opts, unquote(opts), __MODULE__)
-        )
+        ]
       end
 
       ###########################
@@ -65,10 +69,18 @@ defmodule Exzeitable do
         socket =
           socket
           |> assign(assigns)
-          |> maybe_get_records()
-          |> maybe_set_refresh()
 
-        {:ok, socket}
+        {:ok, socket} = mounted(socket)
+        {:ok, refresh(socket)}
+      end
+
+      def mounted(socket), do: {:ok, socket}
+      defoverridable mounted: 1
+
+      def refresh(socket) do
+        socket
+        |> maybe_get_records()
+        |> maybe_set_refresh()
       end
 
       @doc "Clicking the hide button hides the column"
