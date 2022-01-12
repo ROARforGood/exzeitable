@@ -21,7 +21,8 @@ defmodule Exzeitable.Parameters do
     pagination: %{default: [:top, :bottom]},
     parent: %{default: nil},
     assigns: %{default: %{}},
-    text: %{default: Exzeitable.Text.Default}
+    text: %{default: Exzeitable.Text.Default},
+    column_header_action: %{default: nil}
   }
 
   @default_fields [
