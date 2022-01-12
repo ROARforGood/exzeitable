@@ -32,8 +32,22 @@ defmodule Exzeitable.HTML.Table do
   end
 
   @spec table_header({atom, map}, map) :: {:safe, iolist}
-  defp table_header(field, assigns) do
+  defp table_header(field, %{column_header_action: nil} = assigns) do
     [Format.header(assigns, field), hide_link_for(field, assigns), sort_link_for(field, assigns)]
+    |> cont(:th, [])
+  end
+
+  defp table_header(field, %{column_header_action: :sort} = assigns) do
+    header_text = Format.header(assigns, field)
+    header_link = sort_link_for(field, Map.put(assigns, :sort, header_text))
+
+    header =
+      case header_link do
+        "" -> header_text
+        link -> link
+      end
+
+    [header, hide_link_for(field, assigns)]
     |> cont(:th, [])
   end
 
@@ -75,12 +89,15 @@ defmodule Exzeitable.HTML.Table do
     )
   end
 
-  @spec sort_link_for({atom, map}, map) :: {:safe, iolist}
+  @spec sort_link_for({atom, map}, map) :: {:safe, iolist} | String.t()
   defp sort_link_for({:actions, _v}, _), do: ""
   defp sort_link_for({_key, %{order: false}}, _), do: ""
 
   defp sort_link_for({key, _v}, %{order: order} = assigns) do
-    sort = text(assigns, :sort)
+    sort =
+      Map.get_lazy(assigns, :sort, fn ->
+        text(assigns, :sort)
+      end)
 
     label =
       case order do
