@@ -13,9 +13,11 @@ defmodule Exzeitable do
       |> Macro.expand(__CALLER__)
 
     search_string =
-      opts
-      |> Parameters.set_fields()
-      |> record_source.tsvector_string()
+      Keyword.get_lazy(opts, :search_string, fn ->
+        opts
+        |> Parameters.set_fields()
+        |> record_source.tsvector_string()
+      end)
 
     # coveralls-ignore-stop
 
