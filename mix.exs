@@ -100,8 +100,8 @@ defmodule Exzeitable.MixProject do
   defp deps do
     [
       # Phoenix
-      {:phoenix, "~> 1.5.0"},
-      {:phoenix_html, "~> 2.14"},
+      {:phoenix, "~> 1.5"},
+      {:phoenix_html, "~> 3.1"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -113,7 +113,7 @@ defmodule Exzeitable.MixProject do
       {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},
       # Live View
-      {:phoenix_live_view, "~> 0.15.7"},
+      {:phoenix_live_view, "~> 0.17.4"},
       {:floki, ">= 0.0.0", only: [:test, :systemtest]},
       {:timex, "~> 3.5", only: [:dev, :test, :systemtest]},
       # Tooling
