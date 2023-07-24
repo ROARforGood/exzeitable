@@ -107,7 +107,7 @@ defmodule Exzeitable.MixProject do
       {:phoenix_view, "~> 2.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.6"},
       # Ecto
       {:ecto, "~> 3.4"},
       {:ecto_sql, "~> 3.1"},
