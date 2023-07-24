@@ -25,7 +25,7 @@ defmodule Exzeitable do
       use Phoenix.LiveView
       use Phoenix.HTML
       import Ecto.Query
-      alias Phoenix.LiveView.Helpers
+      import Phoenix.LiveView.Helpers
       alias Exzeitable.{Filter, Format, HTML, Parameters, Validation}
       @callback render(map) :: {:ok, iolist}
       @type socket :: Phoenix.LiveView.Socket.t()
@@ -48,7 +48,7 @@ defmodule Exzeitable do
 
       @spec live_table(Plug.Conn.t(), keyword) :: {:safe, iolist}
       def live_table(conn, opts \\ []) do
-        Helpers.live_render(conn, __MODULE__, setup(opts))
+        live_render(conn, __MODULE__, setup(opts))
       end
 
       def setup(opts \\ []) do

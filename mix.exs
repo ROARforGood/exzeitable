@@ -2,15 +2,14 @@ defmodule Exzeitable.MixProject do
   @moduledoc false
   use Mix.Project
 
-  @version "0.4.6"
+  @version "0.9.9"
 
   def project do
     [
       app: :exzeitable,
       version: @version,
-      elixir: "~> 1.10",
+      elixir: "~> 1.14.0",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod,
       aliases: aliases(),
@@ -100,11 +99,12 @@ defmodule Exzeitable.MixProject do
   defp deps do
     [
       # Phoenix
-      {:phoenix, "~> 1.5"},
-      {:phoenix_html, "~> 3.1"},
-      {:phoenix_pubsub, "~> 2.0"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix, "~> 1.7"},
+      {:phoenix_html, "~> 3.3.1"},
+      {:phoenix_pubsub, "~> 2.1"},
+      {:phoenix_ecto, "~> 4.4.2"},
+      {:phoenix_live_reload, "~> 1.4.1", only: :dev},
+      {:phoenix_view, "~> 2.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
@@ -113,7 +113,7 @@ defmodule Exzeitable.MixProject do
       {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},
       # Live View
-      {:phoenix_live_view, "~> 0.17.4"},
+      {:phoenix_live_view, "~> 0.19.5"},
       {:floki, ">= 0.0.0", only: [:test, :systemtest]},
       {:timex, "~> 3.5", only: [:dev, :test, :systemtest]},
       # Tooling
